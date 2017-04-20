@@ -132,7 +132,7 @@ class SentimentNetwork:
     def pre_process_data(self, reviews, labels, polarity_cutoff, min_count):
         
         ## ----------------------------------------
-        ## New for Project 6: Calculate positive-to-negative ratios for words before
+        ## Calculate positive-to-negative ratios for words before
         #                     building vocabulary
         #
         positive_counts = Counter()
@@ -162,7 +162,7 @@ class SentimentNetwork:
             else:
                 pos_neg_ratios[word] = -np.log((1 / (ratio + 0.01)))
         #
-        ## end New for Project 6
+        
         ## ----------------------------------------
 
         # populate review_vocab with all of the words in the given reviews
@@ -240,11 +240,11 @@ class SentimentNetwork:
     def sigmoid_output_2_derivative(self,output):
         return output * (1 - output)
     
-    ## New for Project 5: changed name of first parameter form 'training_reviews' 
+    ##changed name of first parameter form 'training_reviews' 
     #                     to 'training_reviews_raw'
     def train(self, training_reviews_raw, training_labels):
 
-        ## New for Project 5: pre-process training reviews so we can deal 
+        ## pre-process training reviews so we can deal 
         #                     directly with the indices of non-zero inputs
         training_reviews = list()
         for review in training_reviews_raw:
@@ -274,17 +274,17 @@ class SentimentNetwork:
             #### Implement the forward pass here ####
             ### Forward pass ###
 
-            ## New for Project 5: Removed call to 'update_input_layer' function
+            ##  Removed call to 'update_input_layer' function
             #                     because 'layer_0' is no longer used
 
             # Hidden layer
-            ## New for Project 5: Add in only the weights for non-zero items
+            ##  Add in only the weights for non-zero items
             self.layer_1 *= 0
             for index in review:
                 self.layer_1 += self.weights_0_1[index]
 
             # Output layer
-            ## New for Project 5: changed to use 'self.layer_1' instead of 'local layer_1'
+            ## changed to use 'self.layer_1' instead of 'local layer_1'
             layer_2 = self.sigmoid(self.layer_1.dot(self.weights_1_2))            
             
             #### Implement the backward pass here ####
@@ -302,7 +302,7 @@ class SentimentNetwork:
             ## New for Project 5: changed to use 'self.layer_1' instead of local 'layer_1'
             self.weights_1_2 -= self.layer_1.T.dot(layer_2_delta) * self.learning_rate # update hidden-to-output weights with gradient descent step
             
-            ## New for Project 5: Only update the weights that were used in the forward pass
+            ## Only update the weights that were used in the forward pass
             for index in review:
                 self.weights_0_1[index] -= layer_1_delta[0] * self.learning_rate # update input-to-hidden weights with gradient descent step
 
@@ -375,7 +375,7 @@ class SentimentNetwork:
             self.layer_1 += self.weights_0_1[index]
         
         # Output layer
-        ## New for Project 5: changed to use self.layer_1 instead of local layer_1
+        ##  changed to use self.layer_1 instead of local layer_1
         layer_2 = self.sigmoid(self.layer_1.dot(self.weights_1_2))
          
         # Return POSITIVE for values above greater-than-or-equal-to 0.5 in the output layer;
